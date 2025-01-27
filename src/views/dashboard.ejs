@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEX-System</title>
+    <link rel="stylesheet" href="/assets/header.css">
+    <link rel="stylesheet" href="/assets/main.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <div class="logo"><a href="/dashboard">NEX SYSTEM CLOUD</a></div>
+            <div class="options">
+                <div class="option"><img src="/assets/icons/not-connected-controller.png" id="status"></div>
+            </div>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <% for (const key in documents) { %>
+            <div class="container-header">
+                <h2>
+                    <a href="/dashboard?<%= key %>=true"><%= key.charAt(0).toUpperCase() + key.slice(1) %></a>
+                </h2>
+            </div>
+
+            <div class="container-body">
+                <% documents[key].forEach(doc=> { %>
+                    <div class="game-card elements" onclick="(() => { redirect(`<%= doc.replace(/\.nes$|\.sfc$/i, '') %>`, '<%= key %>') })()">
+                        <img src="/assets/media/<%= doc.replace(/\.nes$|\.sfc$/i, '') %>.jpg">
+                    </div>
+                    <% }) %>
+            </div>
+            <% } %>
+    </div>
+
+    <script src="/controllers/dasboard/gamepad.controller.js"></script>
+    <script src="/controllers/dasboard/redirect.controller.js"></script>
+</body>
+
+</html>

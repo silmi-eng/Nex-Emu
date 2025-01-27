@@ -1,0 +1,36 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEX-System</title>
+    <link rel="stylesheet" href="/assets/header.css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
+</head>
+<body class="game-body">
+    <nav class="game-nav">
+        <ul>
+            <div class="options">
+                <a href="/dashboard">
+                    <div class="option">
+                        <img src="/assets/icons/back.png">
+                    </div>
+                </a>
+            </div>
+        </ul>
+    </nav>
+
+    <canvas id="nes"></canvas>
+    
+    <script src="/controllers/game/audio.controller.js"></script>
+    <script src="/controllers/game/emulator.controller.js"></script>
+    <script>
+        new Emulator({
+            game: '<%= game %>',
+            system: '<%= console %>'
+        });
+    </script>
+</body>
+</html>
