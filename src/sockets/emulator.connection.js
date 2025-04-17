@@ -10,9 +10,11 @@ module.exports = app => {
 
     const connections = new Map();
 
-    wss.on("connection", (ws, req) => {
+    wss.on("connection", (ws, req) => {       
         const id = uuidv4();
         ws.id = id;
+        console.log('connected');
+        
 
         ws.send(JSON.stringify({
             type: 'welcome',
@@ -20,8 +22,7 @@ module.exports = app => {
         }));
 
         ws.on('message', (dta) => {
-            const message = JSON.parse(dta);
-
+            const message = JSON.parse(dta);            
             switch (message.type) {
                 case 'initialize':
                     const nes = new Nes({
@@ -39,6 +40,8 @@ module.exports = app => {
 
         ws.on('close', () => {
             const instance = connections.get(id);
+            console.log('disconnected');
+            
 
             if (instance) {
                 instance.nes.remove(id);

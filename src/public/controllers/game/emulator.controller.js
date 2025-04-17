@@ -6,7 +6,7 @@ const fH = 240;
 class Emulator {
     constructor ({ game, system }) {
         this.windowController.resize();
-        this.socket = new WebSocket('ws://192.168.1.160:3000');
+        this.socket = new WebSocket('ws://192.168.1.132:3000');
         this.id = null;
         audio.setup();
 
@@ -51,6 +51,8 @@ class Emulator {
         frame: null,
         imageFrame: null,
         start: (compressed) => {
+            console.log('a');
+            
             const { frame } = this.decompress(compressed);
             this.frame = frame;
             

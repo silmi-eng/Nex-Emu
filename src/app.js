@@ -17,6 +17,7 @@ app.use(
 );
 
 app.use("/", require("./router/pages.route"));
+app.use("/files", require("./router/file.route"));
 app.get("/", (req, res) => res.status(200).redirect("/dashboard"))
 const { server } = require("./sockets/emulator.connection")(app);
 

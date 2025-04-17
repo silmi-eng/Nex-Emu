@@ -9,20 +9,9 @@ class FileManager {
             fs.readdir(this.directory, (err, f) => {
                 if (err)
                     throw new Error(err);
-
-                const snes = f.filter(f => f.endsWith(".sfc"));
+                
                 const nes = f.filter(f => f.endsWith(".nes"));
-
-                if (params.snes)
-                    resolve({ snes });
-
-                if (params.nes)
-                    resolve({ nes });
-
-                if (snes.length !== 0)
-                    resolve({ snes, nes })
-                else
-                    resolve({ nes })
+                resolve({ nes })
             });
         })
     };

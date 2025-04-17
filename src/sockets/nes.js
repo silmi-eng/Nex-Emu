@@ -11,35 +11,40 @@ class Nes {
         this.audioSample = [];
         this.AUDIO_BUFFERING = 512;
 
-        if (!fs.existsSync(this.rom))
-            ws.send(JSON.stringify({ type: 'error', message: 'Game not found' }));
+        const instance = this.nes.get(id);
 
-        this.binaryRom = fs.readFileSync(this.rom, { encoding: 'binary' });
-        this.system = new jsnes.NES({
-            onFrame: async (buffer) => {
-                ws.send(JSON.stringify({
-                    type: 'renders',
-                    render: this.compress(buffer)
-                }))
-            },
-            onAudioSample: (left, right) => {
-                this.audioSample.push({ left, right });
-
-                if (this.audioSample.length >= this.AUDIO_BUFFERING)
-                    if (this.audioSample.length > 0) {
-                        ws.send(JSON.stringify({
-                            type: 'sound',
-                            sound: this.audioSample
-                        }));
-
-                        this.audioSample = [];
-                    }
-            },
-        });
-
-        this.system.loadROM(this.binaryRom);
-        const interval = setInterval(() => this.system.frame(), 1000/ 60);
-        this.nes.set(id, { system: this.system, interval });
+        console.log(instance + 'nes');
+        if (instance === undefined) {
+            if (!fs.existsSync(this.rom))
+                ws.send(JSON.stringify({ type: 'error', message: 'Game not found' }));
+    
+            this.binaryRom = fs.readFileSync(this.rom, { encoding: 'binary' });
+            this.system = new jsnes.NES({
+                onFrame: async (buffer) => {
+                    ws.send(JSON.stringify({
+                        type: 'renders',
+                        render: this.compress(buffer)
+                    }))
+                },
+                onAudioSample: (left, right) => {
+                    this.audioSample.push({ left, right });
+    
+                    if (this.audioSample.length >= this.AUDIO_BUFFERING)
+                        if (this.audioSample.length > 0) {
+                            ws.send(JSON.stringify({
+                                type: 'sound',
+                                sound: this.audioSample
+                            }));
+    
+                            this.audioSample = [];
+                        }
+                },
+            });
+    
+            this.system.loadROM(this.binaryRom);
+            const interval = setInterval(() => this.system.frame(), 1000/ 60);
+            this.nes.set(id, { system: this.system, interval });
+        } 
     }
 
     compress = (buffer) => zlib.deflateSync(Buffer.from(buffer)).toString('base64'); 

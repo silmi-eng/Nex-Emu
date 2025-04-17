@@ -6,7 +6,6 @@ const fileManager = new FileManager();
 router.get("/dashboard", async (req, res, next) => {
   const { snes, nes } = req.query;
   const filter = {
-    snes: snes === "true",
     nes: nes === "true",
   };
 
